@@ -1,0 +1,204 @@
+---
+title: "HW 03 - Road traffic accidents"
+author: "[Your Name]"
+output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+    citation_package: natbib
+link-citations: true
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  eval = FALSE,
+  out.width = "80%",
+  fig.asp = 0.618,
+  fig.width = 10,
+  dpi = 300
+)
+```
+
+```{r photo, fig.margin = TRUE, echo = FALSE, fig.width = 3, fig.cap = "Photo by Clark Van Der Beken on Unsplash", eval = TRUE}
+knitr::include_graphics("img/accident.jpg")
+```
+
+In this assignment we'll look at traffic accidents in Edinburgh. The data are made available [online](https://data.gov.uk/dataset/cb7ae6f0-4be6-4935-9277-47e5ce24a11f/road-safety-data/datafile/36f1658e-b709-47e7-9f56-cca7aefeb8fe/preview) by the UK Government. It covers all recorded accidents in Edinburgh in 2018 and some of the variables were modified for the purposes of this assignment.
+
+# Getting started
+
+## Learning Objectives
+
+In this assignment, you will practice:
+
+- Creating density plots to show distributions over time
+- Using `mutate()` and `if_else()` to create new categorical variables
+- Faceting plots to compare groups
+- Interpreting visualizations in context of data
+- Designing your own multi-variable visualization
+
+---
+
+Navigate to your `homework-instructions` repo in JupyterHub, open the `HW03` folder, and open the R Markdown document `hw-03.Rmd`. Knit it to make sure it compiles without errors.
+
+## Warm up
+
+Before we introduce the data, let's warm up with some simple exercises.
+
+**Complete these steps:**
+
+1. Update the YAML, changing the author name to your name
+2. **Knit** the document
+3. **Commit** your changes with message: `"Updated author name"`
+4. **Push** to GitHub
+5. Verify your changes are visible in your GitHub repo (check both .Rmd and .md files)
+
+If anything is missing, commit and push again.
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualization and the data lives in the **dsbox** package. These packages are already installed for you. You can load them by running the following in your Console:
+```{r load-packages, message = FALSE, eval = TRUE}
+library(tidyverse)
+library(dsbox)
+```
+
+## Data
+
+The data can be found in the **dsbox** package, and it's called `accidents`. Since the dataset is distributed with the package, we don't need to load it separately; it becomes available to us when we load the package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?accidents` in the Console or using the Help menu in RStudio to search for `accidents`. You can also find this information [here](https://rstudio-education.github.io/dsbox/reference/accidents.html).
+
+# Exercises
+
+1.  How many observations (rows) does the dataset have? Instead of hard coding the number in your answer, use inline code.
+
+
+2.  Run `View(accidents)` in your Console to view the data in the data viewer. What does each row in the dataset represent?
+
+🧶 Knit → ✅ Commit with message `"Completed Exercises 1-2"` → ⬆️ Push
+
+3. Create a plot that shows the distribution of accidents throughout the day, comparing weekdays vs. weekends and by accident severity.
+
+Your plot should include:
+
+- A density plot showing `time` on the x-axis
+- Different colors for different `severity` levels
+- Separate facets for weekdays vs. weekends
+- Appropriate labels and title
+
+**Step 1:** Create a new variable called `day_of_week_type` that categorizes days as "Weekend" (Saturday and Sunday) or "Weekday" (all other days)
+
+**Hint:** Use `mutate()` with `if_else()`. The condition should check if `day_of_week` is in the vector `c("Saturday", "Sunday")`
+
+```{r create-day-type, eval = FALSE}
+accidents %
+  mutate(day_of_week_type = if_else(
+    ___ %in% c(___, ___), 
+    "___", 
+    "___"
+  ))
+```
+
+**Step 2:** Build the visualization using density plots
+
+**Hints:**
+
+- Use `geom_density()` with `alpha = 0.5` for transparency
+- Use `fill = severity` in your aesthetic mapping to color by severity
+- Use `facet_wrap()` to create separate plots for weekday vs. weekend
+- Add `theme_minimal()` and appropriate labels
+
+```{r accident-density-plot, eval = FALSE}
+ggplot(data = ___, aes(x = ___, fill = ___)) +
+  geom_density(alpha = ___) +
+  facet_wrap(~___, ncol = ___) +
+  ___ +
+  labs(
+    title = "___",
+    subtitle = "___",
+    x = "___",
+    y = "___",
+    fill = "___"
+  )
+```
+
+**Interpretation (2-3 sentences):** Describe what patterns you observe:
+
+- When do accidents tend to occur during weekdays vs. weekends?
+- How does the severity of accidents vary by time of day?
+- Are there any notable differences between weekdays and weekends?
+
+
+*After completing Exercise 3:*
+
+🧶 Knit → ✅ Commit with message `"Completed Exercise 3"` → ⬆️ Push
+
+4.  Create your own data visualization based on the accidents data. Your visualization must include at least three variables.
+
+**Requirements:**
+
+- Use at least 3 variables from the dataset
+- Choose an appropriate plot type for your question
+- Include proper labels (title, axis labels, legend if applicable)
+- Write an interpretation of what the plot shows
+
+**Some ideas to explore:**
+
+- How does accident severity vary by weather conditions and light conditions?
+- What is the relationship between speed limit, number of vehicles, and severity?
+- How do accident patterns differ across different road types and weather conditions?
+- Do certain vehicle types have more accidents in specific conditions?
+
+**Your visualization:**
+```{r custom-visualization, eval = FALSE}
+# Your code here
+```
+
+**What question does your visualization answer?**
+
+
+**What variables were used:** 
+
+**Interpretation (3-4 sentences):** What patterns or insights does your visualization reveal?
+
+*After completing Exercise 4:*
+
+🧶 Knit → ✅ Commit with message `"Completed Exercise 4"` → ⬆️ Push
+
+
+---
+
+## Common Errors and Troubleshooting
+
+**Data wrangling errors:**
+
+- **Error: "object 'day_of_week_type' not found"** → Make sure you ran the `mutate()` step and saved it back to `accidents` with `<-`
+- **`if_else()` not working** → Check that you're using `%in%` for checking multiple values: `day_of_week %in% c("Saturday", "Sunday")`
+
+**Visualization errors:**
+
+- **Density plot looks wrong** → Make sure `time` is on the x-axis and `severity` is mapped to `fill`
+- **Facets not appearing** → Check that you created the `day_of_week_type` variable first
+- **Colors not showing** → Make sure `fill = severity` is inside `aes()`
+- **Plot is too small/hard to read** → Try adjusting `fig.width` in your chunk options
+
+**General issues:**
+
+- **Error: "could not find function"** → Load the tidyverse package: `library(tidyverse)`
+- **Changes not showing** → Save your file and knit again
+- **Inline code not working** → Remember to use backticks around your R code
+
+---
+
+**To submit:**
+
+1. Click the **Knit** dropdown menu (next to the Knit button)
+2. Select **Knit to tufte_handout** to generate a PDF
+3. Download the PDF file from your Files pane
+4. Upload the PDF to Canvas
+
+**✓ Final check:** Visit your GitHub repo to confirm all your commits are there!

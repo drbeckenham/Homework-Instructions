@@ -1,0 +1,263 @@
+---
+title: "HW 08 - Exploring the GSS"
+author: "[Your Name]"
+output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+    citation_package: natbib
+link-citations: true
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  eval = FALSE,
+  out.width = "80%",
+  fig.asp = 0.618,
+  fig.width = 10,
+  dpi = 300
+)
+```
+
+```{r photo, fig.margin = TRUE, echo = FALSE, fig.width = 3, fig.cap = "Photo by Mauro Mora on Unsplash", eval = TRUE}
+knitr::include_graphics("img/mauro-mora-31-pOduwZGE-unsplash.jpg")
+```
+
+The GSS gathers data on contemporary American society in order to monitor and explain trends and constants in attitudes, behaviours, and attributes. Hundreds of trends have been tracked since 1972. In addition, since the GSS adopted questions from earlier surveys, trends can be followed for up to 70 years.
+
+The GSS contains a standard core of demographic, behavioral, and attitudinal questions, plus topics of special interest. Among the topics covered are civil liberties, crime and violence, intergroup tolerance, morality, national spending priorities, psychological well-being, social mobility, and stress and traumatic events.
+
+In this assignment we analyze data from the 2016 GSS, using it to estimate values of population parameters of interest about US adults.[^1]
+
+[^1]: Smith, Tom W, Peter Marsden, Michael Hout, and Jibum Kim. General Social Surveys, 1972-2016 [machine-readable data file] /Principal Investigator, Tom W. Smith; Co-Principal Investigator, Peter V. Marsden; Co-Principal Investigator, Michael Hout; Sponsored by National Science Foundation. -NORC ed.- Chicago: NORC at the University of Chicago [producer and distributor]. Data accessed from the GSS Data Explorer website at gssdataexplorer.norc.org.
+
+# Getting started
+
+Open the `hw-08-exploring-gss.rmd` file in your RStudio Notebook on JupyterHub. Knit the document to make sure it compiles without errors.
+
+## Learning Objectives
+
+In this assignment, you will practice working with real survey data to:
+
+- Calculate percentages and proportions from categorical data
+- Handle missing data (NAs) appropriately
+- Create new variables by combining existing ones
+- Recode categorical variables into meaningful groups
+- Fit and interpret multiple regression models
+- Evaluate model assumptions using residual plots
+- Visualize relationships between categorical variables
+
+## Warm up
+
+Before we introduce the data, let's warm up with some simple exercises. Update the YAML of your R Markdown file with your information, knit, commit, and push your changes. Make sure to commit with a meaningful commit message. Then, go to your repo on GitHub and confirm that your changes are visible in your Rmd **and** md files. If anything is missing, commit and push again.
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualisation and the data lives in the **dsbox** package. These packages are already installed for you. You can load them by running the following in your Console:
+
+```{r load-packages, message = FALSE, eval = TRUE}
+library(tidyverse)
+library(dsbox)
+```
+
+## Data
+
+The data can be found in the **dsbox** package, and it's called `gss16`. Since the dataset is distributed with the package, we don't need to load it separately; it becomes available to us when we load the package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?gss16` in the Console or using the Help menu in RStudio to search for `gss16`. You can also find this information [here](https://rstudio-education.github.io/dsbox/reference/gss16.html).
+
+## Working with Survey Data
+
+Survey data often has missing values and requires careful handling. Here are key functions:
+
+**Handling Missing Data:**
+- `na.omit()` or `drop_na()` - Remove rows with NAs
+- `!is.na(variable)` - Filter for non-missing values
+- `sum(!is.na(variable))` - Count non-missing responses
+
+**Calculating Percentages:**
+```{r eval=FALSE}
+# For categorical data
+data %>%
+  filter(!is.na(variable)) %>%
+  count(variable) %>%
+  mutate(percentage = n / sum(n) * 100)
+```
+
+**Recoding Variables:**
+
+- `case_when()` - Recode based on conditions (best for multiple conditions)
+
+- `fct_collapse()` - Combine factor levels into groups
+
+- `if_else()` - Simple two-condition recoding
+
+**Creating New Variables:**
+
+- `mutate(new_var = var1 + var2)` - Combine numeric variables
+
+- `mutate(new_var = if_else(condition, "Yes", "No"))` - Create binary variables
+
+**Model Diagnostics:**
+
+- `augment(model)` from the **broom** package adds predictions and residuals to your data
+
+- Plot residuals vs. fitted values to check model assumptions
+
+# Exercises
+
+## Part 1: Harassment at work
+
+In 2016, the GSS added a new question on harassment at work. The question is phrased as the following.
+
+> *Over the past five years, have you been harassed by your superiors or co-workers at your job, for example, have you experienced any bullying, physical or psychological abuse?*
+
+Answers to this question are stored in the `harass5` variable in our dataset.
+
+1.  What are the possible responses to this question and how many respondents chose each of these answers?
+
+2.  What percent of the respondents for whom this question is applicable\
+    (i.e. excluding `NA`s and `Does not apply`s) have been harassed by their superiors or co-workers at their job.
+
+**Checkpoint:** Before moving on, verify your work:
+
+- Your percentage in Question 2 should be calculated only from applicable responses (excluding NAs and "Does not apply")
+
+- The percentage should be between 0 and 100
+
+Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
+
+## Part 2: Time spent on email
+
+The 2016 GSS also asked respondents how many hours and minutes they spend on email weekly. The responses to these questions are recorded in the `emailhr` and `emailmin` variables. For example, if the response is 2.5 hrs, this would be recorded as `emailhr = 2` and `emailmin = 30`.
+
+3.  Create a new variable called `email` that combines these two variables to reports the number of minutes the respondents spend on email weekly.
+
+4.  Visualize the distribution of this new variable. Find the mean and the median number of minutes respondents spend on email weekly. Is the mean or the median a better measure of the typical among of time Americans spend on email weekly? Why?
+
+5.  Create another new variable, `snap_insta` that is coded as "Yes" if the respondent reported using any of Snapchat (`snapchat`) or Instagram (`instagrm`), and "No" if not. If the recorded value was `NA` for both of these questions, the value in your new variable should also be `NA`.
+
+**Logic to implement:**
+
+- If `snapchat == "Yes"` OR `instagrm == "Yes"` → `snap_insta = "Yes"`
+
+- If `snapchat == "No"` AND `instagrm == "No"` → `snap_insta = "No"`
+
+- If both `snapchat` and `instagrm` are `NA` → `snap_insta = NA`
+
+**Hint:** Use `case_when()` to handle these conditions. You'll need to check for the NA condition first.
+
+```{r snap-insta}
+# Your code here
+```
+
+6.  Calculate the percentage of Yes's for `snap_insta` among those who answered the question, i.e. excluding `NA`s.
+
+7.  What are the possible responses to the question *Last week were you working full time, part time, going to school, keeping house, or what?* and how many respondents chose each of these answers? Note that this information is stored in the `wrkstat` variable.
+
+8.  Fit a model predicting `email` (number of minutes per week spent on email) from `educ` (number of years of education), `wrkstat`, and `snap_insta`. Interpret the slopes for each of these variables.
+
+9.  Create a predicted values vs. residuals plot for this model. Are there any issues with the model? If yes, describe them.
+
+Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
+
+**Checkpoint:** Before moving to Part 3, verify your Part 2 work:
+
+- The `email` variable should be in minutes (not hours)
+
+- Your `snap_insta` variable should have three possible values: "Yes", "No", and NA
+
+- Your model in Question 8 should include three predictors: `educ`, `wrkstat`, and `snap_insta`
+
+- Your residual plot should show fitted values on the x-axis and residuals on the y-axis
+
+## Part 3: Political views and science research
+
+The 2016 GSS also asked respondents whether they think of themselves as liberal or conservative (`polviews`) and whether they think science research is necessary and should be supported by the federal government (`advfront`).
+
+-   The question on science research is worded as follows:
+
+> Even if it brings no immediate benefits, scientific research that advances the frontiers of knowledge is necessary and should be supported by the federal government.
+
+And possible responses to this question are Strongly agree, Agree, Disagree, Strongly disagree, Don't know, No answer, Not applicable.
+
+-   The question on political views is worded as follows:
+
+> We hear a lot of talk these days about liberals and conservatives. I'm going to show you a seven-point scale on which the political views that people might hold are arranged from extremely liberal--point 1--to extremely conservative--point 7. Where would you place yourself on this scale?
+
+```{marginfigure}
+**Note:** The levels of this variables are spelled inconsistently: "Extremely liberal" vs. "Extrmly conservative". Since this is the spelling that shows up in the data, you need to make sure this is how you spell the levels in your code.
+```
+
+And possible responses to this question are Extremely liberal, Liberal, Slightly liberal, Moderate, Slghtly conservative, Conservative, Extrmly conservative. Responses that were originally Don't know, No answer and Not applicable are already mapped to `NA`s upon data import.
+
+10. In a new variable, recode `advfront` such that Strongly Agree and Agree are mapped to `"Yes"`, and Disagree and Strongly disagree are mapped to `"No"`. The remaining levels can be left as is. Don't overwrite the existing `advfront`, instead pick a different, informative name for your new variable.
+
+**Hint:** Use `case_when()` and check the exact spelling of levels by running `count(gss16, advfront)` first.
+
+```{r recode-advfront}
+# Your code here
+```
+
+11. In a new variable, recode `polviews` such that Extremely liberal, Liberal, and Slightly liberal, are mapped to `"Liberal"`, and Slghtly conservative, Conservative, and Extrmly conservative disagree are mapped to `"Conservative"`. The remaining levels can be left as is. Make sure that the levels are in a reasonable order. Don't overwrite the existing `polviews`, instead pick a different, informative name for your new variable.
+
+**Note:** Pay attention to spelling - the data has "Slghtly conservative" and "Extrmly conservative" (abbreviated).
+
+**Hint:** After recoding, convert to a factor with levels in order: "Liberal", "Moderate", "Conservative"
+
+```{r recode-polviews}
+# Your code here
+```
+
+12. Create a visualization that displays the relationship between these two new variables and interpret it.
+
+Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards and review the md document on GitHub to make sure you're happy with the final state of your work.*
+
+Now go back through your write up to make sure you've answered all questions and all of your R chunks are properly labeled.
+
+Once you decide that you are done with the homework, choose the knit drop down and select `Knit to tufte_handout` to generate a pdf. Download and submit that pdf to Canvas.
+
+
+
+---
+
+## Common Errors and Troubleshooting
+
+**Working with NAs:**
+
+- **Percentages don't add up to 100%** → Make sure you filtered out NAs before calculating percentages
+
+- **Getting NA as a result** → Use `na.rm = TRUE` in functions like `sum()` and `mean()`
+
+- **Too many NAs in visualization** → Consider filtering them out or treating them as a separate category
+
+**Recoding errors:**
+
+- **Error: "unexpected symbol"** → Check spelling of factor levels - they're case-sensitive and may have unusual spellings (e.g., "Slghtly")
+
+- **`case_when()` returns all NAs** → Check that your conditions exactly match the data values; run `count()` on the original variable first
+
+- **Levels not in order** → Use `factor(variable, levels = c("Liberal", "Moderate", "Conservative"))` after recoding
+
+**Variable creation:**
+
+- **`email` has unrealistic values** → Remember to convert hours to minutes: `emailhr * 60 + emailmin`
+
+- **`snap_insta` logic not working** → The NA condition should come first in your `case_when()`
+
+**Modeling:**
+
+- **Error: "object not found" in model** → Make sure all recoded variables are saved back to `gss16`
+
+- **Can't interpret factor slopes** → Remember that slopes show difference from the baseline level
+
+- **Residual plot not working** → Install/load the `broom` package: `library(broom)`
+
+**Visualization:**
+
+- **Too many categories cluttering the plot** → Filter out NAs and "Don't know" responses before plotting
+
+- **Can't see the relationship** → Try different plot types or use `position = "fill"` for proportions

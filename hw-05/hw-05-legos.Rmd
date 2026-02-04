@@ -1,0 +1,305 @@
+---
+title: "HW 05 - Legos"
+author: "[Your Name]"
+output: 
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
+  tufte::tufte_handout:
+    latex_engine: xelatex
+    highlight: pygments
+    keep_tex: true
+    citation_package: natbib
+link-citations: true
+---
+
+```{r include = FALSE}
+knitr::opts_chunk$set(
+  eval = FALSE,
+  out.width = "80%",
+  fig.asp = 0.618,
+  fig.width = 10,
+  dpi = 300
+)
+```
+
+```{r photo, fig.margin = TRUE, echo = FALSE, fig.width = 3, fig.cap = "Photo by Daniel Cheung on Unsplash", eval = TRUE}
+knitr::include_graphics("img/daniel-cheung-ZqqlOZyGG7g-unsplash.jpg")
+```
+
+This week we'll do some data gymnastics to refresh and review what we learned over the past few weeks using (simulated) data from Lego sales in 2018 for a sample of customers who bought Legos in the US.
+
+# Getting started
+
+Open the `hw-05-legos.Rmd` file in your RStudio Notebook on JupyterHub. Knit the document to make sure it compiles without errors.
+
+## Warm up
+
+Before we introduce the data, let's warm up with some simple exercises. Update the YAML of your R Markdown file with your information, knit, commit, and push your changes. Make sure to commit with a meaningful commit message. Then, go to your repo on GitHub and confirm that your changes are visible in your Rmd **and** md files. If anything is missing, commit and push again.
+
+## Packages
+
+We'll use the **tidyverse** package for much of the data wrangling and visualisation and the data lives in the **dsbox** package. These packages are already installed for you. You can load them by running the following in your Console:
+
+```{r load-packages, message = FALSE, eval = TRUE}
+library(tidyverse)
+library(dsbox)
+```
+
+## Data
+
+The data can be found in the **dsbox** package, and it's called `lego_sales`. Since the dataset is distributed with the package, we don't need to load it separately; it becomes available to us when we load the package. You can find out more about the dataset by inspecting its documentation, which you can access by running `?lego_sales` in the Console or using the Help menu in RStudio to search for `lego_sales`. You can also find this information [here](https://rstudio-education.github.io/dsbox/reference/lego_sales.html).
+
+## Explore the Data
+
+Before you start the exercises, take a few minutes to explore the `lego_sales` dataset. Run the following code in your Console (not in your Rmd file) to get familiar with the data:
+```{r explore-data, eval=FALSE}
+# View the structure of the data
+glimpse(lego_sales)
+
+# Look at the first few rows
+head(lego_sales)
+
+# Get summary statistics
+summary(lego_sales)
+
+# View the full dataset in a spreadsheet-style viewer
+View(lego_sales)
+```
+
+**Questions to consider as you explore:**
+- How many rows (observations) are in the dataset?
+- What variables are included?
+- What types of data are in each variable (numeric, character, etc.)?
+- Are there any missing values (NAs)?
+- What is the range of ages? Prices? Quantities?
+
+Understanding your data before you start analyzing it is a crucial first step in any data science project!
+
+## Helpful Functions
+
+Here's a quick reference of functions you'll need for this assignment. You've used all of these in previous assignments, but this is a handy reminder of what each does:
+
+| Function | Purpose | Example |
+|----------|---------|---------|
+| `count()` | Count occurrences of values | `data %>% count(variable, sort = TRUE)` |
+| `filter()` | Keep rows that meet a condition | `data %>% filter(age > 25)` |
+| `group_by()` | Group data by a variable | `data %>% group_by(category)` |
+| `summarise()` | Calculate summary statistics | `summarise(total = sum(quantity))` |
+| `mutate()` | Create or modify variables | `mutate(new_var = var1 * var2)` |
+| `case_when()` | Conditional logic (like if-else) | `case_when(age <= 18 ~ "child", age > 18 ~ "adult")` |
+| `str_sub()` | Extract part of a text string | `str_sub(phone, 1, 3)` extracts first 3 characters |
+| `arrange()` | Sort rows | `arrange(desc(total))` sorts high to low |
+| `slice()` | Select specific rows by position | `slice(1:3)` gets first 3 rows |
+
+**Remember:** Use the pipe operator `%>%` to chain these functions together!
+
+# Exercises
+
+Answer the following questions using pipelines. For each question, state your answer in a sentence, e.g. "In this sample, the first three common names of purchasers are ...". Note that the answers to all questions are within the context of this particular sample of sales, i.e. you shouldn't make inferences about the population of all Lego sales based on this sample.
+
+## Getting Started with Pipelines
+
+For the first few questions, we'll provide some code structure to help you get started. Fill in the blanks (indicated by `_____`) with the appropriate variable names or arguments.
+
+## Understanding Your Output
+
+When you run your code, your output should be displayed in a table format. Here's an example of what the output for a `count()` function might look like:
+
+```{r example-output, eval=TRUE, echo=FALSE}
+# This is just an example - your actual results will be different
+tibble(
+  first_name = c("Michael", "Jennifer", "Matthew"),
+  n = c(45, 42, 38)
+)
+```
+
+The `n` column shows how many times each name appears in the dataset. Your job is to interpret this output and write your answer in a complete sentence.
+
+1. What are the three most common first names of purchasers?
+
+```{marginfigure}
+*Hints: What variable contains the first names? Do you want the results sorted in ascending or descending order?*
+```
+
+
+```{r q1, eval = FALSE}
+lego_sales %>%
+  count(_____, sort = _____) %>%
+  slice(1:3)
+```
+
+**Write your answer here:** In this sample, the three most common first names of purchasers are...
+
+2.  What are the three most common themes of Lego sets purchased?
+
+```{r q2, eval = FALSE}
+lego_sales %>%
+  count(_____, sort = _____) %>%
+  slice(1:3)
+```
+
+*Your output should show three rows with a theme name and count (n).*
+
+**Write your answer here:** In this sample, the three most common themes of Lego sets purchased are...
+
+3.  Among the most common theme of Lego sets purchased, what is the most common subtheme?
+
+ Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards.*
+
+
+
+4.  Create a new variable called `age_group` and group the ages into the following categories: "18 and under", "19 - 25", "26 - 35", "36 - 50", "51 and over".
+
+```{marginfigure}
+**Hint:** Use the `case_when()` function within `mutate()`. The structure is:
+mutate(age_group = case_when(
+  age <= 18 ~ "18 and under",
+  age >= 19 & age <= 25 ~ "19 - 25",
+  ...
+))
+Each condition is tested in order. The `~` separates the condition from the label.
+```
+
+```{r q4}
+# Your code here
+```
+
+After creating the variable, verify it worked by viewing the first few rows with `select()` and `head()`, and count how many observations fall into each age group.
+
+**Write your answer here:** I created the age_group variable. The distribution shows...
+
+
+5.  Which age group has purchased the highest number of Lego sets.
+
+```{marginfigure}
+**Important:** Remember that `quantity` tells you how many sets were purchased. If someone bought quantity = 2, that counts as 2 Lego sets, not 1 purchase.
+```
+
+```{r q5}
+# Your code here
+```
+
+*Think about: What do you need to sum? What do you need to group by?*
+
+**Write your answer here:** The age group that has purchased the highest number of Lego sets is...
+
+
+
+6.  Which age group has spent the most money on Legos?
+
+```{marginfigure}
+**Hint:** For each row, total spending = quantity × price. You'll need to create this calculation, then sum by age group.
+```
+
+```{r q6}
+# Your code here
+```
+
+**Write your answer here:** The age group that has spent the most money on Legos is...
+
+
+7.  Which Lego theme has made the most money for Lego?
+
+```{marginfigure}
+**Hint:** The `str_sub()` function extracts parts of text strings. 
+Example: `str_sub("Star Wars", 1, 4)` returns `"Star"`.
+For this question, you'll need to:
+1. Create a variable for total revenue per sale (quantity × us_price)
+2. Group by theme
+3. Sum the revenue
+But wait - the theme variable might have extra text after the main theme name. Use `str_sub(theme, 1, X)` to extract just the first X characters if needed. Experiment to find the right number!
+```
+
+```{r q7}
+# Your code here
+```
+
+**Write your answer here:**
+
+8.  Which area code has spent the most money on Legos?
+
+```{marginfigure}
+**Hint:** The `str_sub()` function extracts parts of text. For example: `str_sub("555-1234", 1, 3)` returns `"555"`. In the US, the area code is the first 3 digits of a phone number.
+You'll need to:
+1. Use `mutate()` to create an `area_code` variable: `str_sub(phone_number, 1, 3)`
+2. Create another variable for total spent per transaction
+3. Group by the new area_code variable
+4. Sum the total spent
+```
+
+
+```{r q8}
+# Your code here
+```
+
+**Write your answer here:**
+
+9.  Come up with a question you want to answer using these data, and write it down. Then, create a data visualization that answers the question, and explain how your visualization answers the question.
+
+Be sure to include your reaearch quesiton, the variables you'll need to use to answer the question, the type of plot that will answer the question along with the code, and 2-3 sentences interpreting your results. 
+
+Knit, *commit, and push your changes to GitHub with an appropriate commit message. Make sure to commit and push all changed files so that your Git pane is cleared up afterwards and review the md document on GitHub to make sure you're happy with the final state of your work.*
+
+Now go back through your write up to make sure you've answered all questions and all of your R chunks are properly labeled.
+
+Once you decide that you are done with the homework, choose the knit drop down and select `Knit to tufte_handout` to generate a pdf. Download and submit that pdf to Canvas.
+
+## Common Errors and Solutions
+
+As you work through this assignment, you might encounter some errors. Here are the most common ones and how to fix them:
+
+**Error: "could not find function 'count'"** or similar
+
+- **Problem:** Packages aren't loaded
+
+- **Solution:** Run `library(tidyverse)` and `library(dsbox)` in your Console
+
+**Error: "object 'lego_sales' not found"**
+
+- **Problem:** The dsbox package isn't loaded
+
+- **Solution:** Run `library(dsbox)` in your Console
+
+**Error: "could not find function '%>%'"**
+
+- **Problem:** The tidyverse package isn't loaded
+
+- **Solution:** Run `library(tidyverse)` in your Console
+
+**Error: "object '____' not found"** (where ____ is a variable you created)
+
+- **Problem:** You didn't save your modified dataset or ran chunks out of order
+
+- **Solution:** Make sure you used `<-` to save changes (e.g., `lego_sales <- lego_sales %>% mutate(...)`) and run chunks in order from top to bottom
+
+**Getting a lot of NA values in your results**
+
+- **Problem:** Some data might be missing
+
+- **Solution:** Add `na.rm = TRUE` inside functions like `sum()`: `sum(quantity, na.rm = TRUE)`
+
+**Your pipe %>% isn't working**
+
+- **Problem:** Check your syntax
+
+- **Solution:** Make sure there's a space before and after `%>%`, and that each new line of the pipeline is indented
+
+**Can't find the answer you expected**
+
+- **Problem:** Double-check variable names (they're case-sensitive!)
+
+- **Solution:** Run `names(lego_sales)` to see all available variable names
+
+**Still stuck?**
+
+- Read the error message carefully - it often tells you what's wrong
+
+- Check your spelling and capitalization
+
+- Make sure parentheses `()` and quotes `""` are matched
+
+- Try running your code line by line to find where the error occurs
+
+- Ask for help!
