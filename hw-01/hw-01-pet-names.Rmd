@@ -1,6 +1,6 @@
 ---
 title: "HW 01 - Pet names"
-author: "[your name here]"
+author: "Susan Beckenham"
 subtitle: "Meet the toolkit"
 output: 
   tufte::tufte_html:
