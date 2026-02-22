@@ -324,6 +324,7 @@ seattlepets %>%
 seattlepets %>% 
   group_by(species) %>%
   count(animal_name, sort = TRUE) %>% 
+  arrange(species,n) %>%
   slice_max(n, n = 5)
 ```
 
@@ -331,6 +332,7 @@ Based on the previous output we can easily identify the most common cat and dog 
 
 Which option groups all the cats together and all the dogs together, with names ranked by frequency within each species?
 
+Arrange(species,n) would do the arrangement as required.
 *After completing this exercise:*
 
 🧶 Knit → ✅ Commit with message `"Completed Exercise 4` → ⬆️ Push
