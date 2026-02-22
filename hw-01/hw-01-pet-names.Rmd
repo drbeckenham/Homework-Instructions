@@ -184,7 +184,7 @@ This will prompt a dialogue box where you may need to authenticate with GitHub. 
 
 **Note:** The first time you push, you may need to set up authentication. If you encounter issues, refer to the authentication guide posted on Canvas or ask for help during office hours.
 
-**Thought exercise:** Which of the above steps (updating the YAML, committing, and pushing) needs to talk to GitHub?[^1]
+**Thought exercise:** Which of the above steps (updating the YAML, committing, and pushing) needs to talk to GitHub?[^1] Pushing needs to talk to Github.
 
 [^1]: Only pushing requires talking to GitHub, this is why you're asked for your password at that point.
 
@@ -257,6 +257,8 @@ As you work through this assignment, you might encounter some issues. Here are t
 # Exercises
 
 1.  According to the data dictionary, how many pets are included in this dataset?
+
+There are 52,519 pets in the dataset.
 
 *After completing this exercise:*
 
