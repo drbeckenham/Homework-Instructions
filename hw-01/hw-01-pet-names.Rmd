@@ -3,15 +3,15 @@ title: "HW 01 - Pet names"
 author: "Susan Beckenham"
 subtitle: "Meet the toolkit"
 output: 
-  tufte::tufte_html:
-    css: ../lab.css
-    tufte_variant: "envisioned"
-    highlight: pygments
   tufte::tufte_handout:
     latex_engine: xelatex
     highlight: pygments
     keep_tex: true
     citation_package: natbib
+  tufte::tufte_html:
+    css: ../lab.css
+    tufte_variant: "envisioned"
+    highlight: pygments
 link-citations: true
 ---
 
