@@ -1,0 +1,792 @@
+\documentclass[]{tufte-handout}
+
+% ams
+\usepackage{amssymb,amsmath}
+
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \makeatletter
+  \@ifpackageloaded{fontspec}{}{\usepackage{fontspec}}
+  \makeatother
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+  \makeatletter
+  \@ifpackageloaded{soul}{
+     \renewcommand\allcapsspacing[1]{{\addfontfeature{LetterSpace=15}#1}}
+     \renewcommand\smallcapsspacing[1]{{\addfontfeature{LetterSpace=10}#1}}
+   }{}
+  \makeatother
+
+\fi
+
+% graphix
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+
+% booktabs
+\usepackage{booktabs}
+
+% url
+\usepackage{url}
+
+% hyperref
+\usepackage{hyperref}
+
+% units.
+\usepackage{units}
+
+
+\setcounter{secnumdepth}{-1}
+
+% citations
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+
+% pandoc syntax highlighting
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+
+% table with pandoc
+
+% multiplecol
+\usepackage{multicol}
+
+% strikeout
+\usepackage[normalem]{ulem}
+
+% morefloats
+\usepackage{morefloats}
+
+
+% tightlist macro required by pandoc >= 1.14
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% title / author / date
+\title{HW 01 - Pet names}
+\author{Susan Beckenham}
+\date{}
+
+
+\begin{document}
+
+\maketitle
+
+
+
+
+\begin{marginfigure}
+\includegraphics[width=0.8\linewidth]{img/jovana-askrabic-XYIQXLH_v0o-unsplash} \caption[Photo by Jovana Askrabic on Unsplash]{Photo by Jovana Askrabic on Unsplash}\label{fig:photo}
+\end{marginfigure}
+
+The goal of this assignment is to introduce you to R, RStudio, Git, and
+GitHub, which you'll be using throughout the course both to learn the
+data science concepts discussed in the course and to analyze real data
+and come to informed conclusions.
+
+\subsection{What You'll Learn}\label{what-youll-learn}
+
+By the end of this assignment, you will be able to:
+
+\begin{itemize}
+\tightlist
+\item
+  Clone a GitHub repository to JupyterHub
+\item
+  Navigate the RStudio interface
+\item
+  Edit and knit R Markdown documents
+\item
+  Use basic R functions to explore data
+\item
+  Make commits with meaningful messages
+\item
+  Push changes to GitHub
+\item
+  Generate a PDF document for submission
+\end{itemize}
+
+\textbf{Don't worry if these terms are unfamiliar!} We'll walk through
+each step carefully.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Getting started}\label{getting-started}
+
+\subsection{Prerequisites}\label{prerequisites}
+
+This assignment assumes that you have reviewed the lectures titled
+``Meet the toolkit: Programming'' and ``Meet the toolkit: version
+control and collaboration''. If you haven't yet done so, please pause
+and complete the following before continuing.
+
+\subsection{Terminology}\label{terminology}
+
+We've already thrown around a few new terms, so let's define them before
+we proceed.
+
+\begin{itemize}
+\item
+  \textbf{R:} Name of the programming language we will be using
+  throughout the course.
+\item
+  \textbf{RStudio:} An integrated development environment for R. In
+  other words, a convenient interface for writing and running R code.
+\item
+  \textbf{Git:} A version control system.
+\item
+  \textbf{GitHub:} A web platform for hosting version controlled files
+  and facilitating collaboration among users.
+\item
+  \textbf{Repository:} A Git repository contains all of your project's
+  files and stores each file's revision history. It's common to refer to
+  a repository as a repo.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    In this course, each assignment you work on will be contained in a
+    Git repo.
+  \item
+    For individual assignments, only you will have access to the repo.
+    For team assignments, all team members will have access to a single
+    repo where they work collaboratively.
+  \item
+    All repos associated with this course are housed in the course
+    GitHub organization. The organization is set up such that students
+    can only see repos they have access to, but the course staff can see
+    all of them.
+  \end{itemize}
+\end{itemize}
+
+\subsection{Starting slow}\label{starting-slow}
+
+As the course progresses, you are encouraged to explore beyond what the
+assignments dictate; a willingness to experiment will make you a much
+better programmer! Before we get to that stage, however, you need to
+build some basic fluency in R. First, we will explore the fundamental
+building blocks of all of these tools.
+
+Before you can get started with the analysis, you need to make sure you:
+
+\begin{itemize}
+\item
+  have a GitHub account
+\item
+  are a member of the course GitHub organization
+\item
+  have successfully logged in and authenticated in the JupyterHub
+\end{itemize}
+
+If you failed to confirm any of these, it means you have not yet
+completed the prerequisites for this assignment. Please go back to
+\hyperref[prerequisites]{Prerequisites} and complete them before
+continuing the assignment.
+
+\section{Workflow}\label{workflow}
+
+\begin{marginfigure}
+\textbf{IMPORTANT:} If there is no GitHub repo created for you for this
+assignment, it means I didn't have your GitHub username as of when I
+assigned the homework. Please let me know your GitHub username asap, and
+I can create your repo.
+\end{marginfigure}
+
+For each assignment in this course you will start with a GitHub repo
+that I created for you and that contains the starter documents you will
+build upon when working on your assignment. The first step is always to
+bring these files into RStudio so that you can edit them, run them, view
+your results, and interpret them. This action is called
+\textbf{cloning}.
+
+Then you will work in RStudio on the data analysis, making
+\textbf{commits} along the way (snapshots of your changes) and finally
+\textbf{push} all your work back to GitHub.
+
+The next few steps will walk you through the process of getting
+information of the repo to be cloned, cloning your repo in a new RStudio
+project, and getting started with the analysis.
+
+\subsection{Step 1. Get URL of repo to be
+cloned}\label{step-1.-get-url-of-repo-to-be-cloned}
+
+\begin{marginfigure}
+\includegraphics[width=0.8\linewidth]{img/clone-repo-link} \end{marginfigure}
+
+On GitHub, click on the green \textbf{Code} button, select
+\textbf{HTTPS} (this might already be selected by default, and if it is,
+you'll see the text \emph{Use Git or checkout with SVN using the web
+URL} as in the image on the right). Click on the clipboard icon 📋 to
+copy the repo URL.
+
+\subsection{Step 2. Go to JupyterHub and open
+RStudio}\label{step-2.-go-to-jupyterhub-and-open-rstudio}
+
+Go to \href{https://santiago.cloudbank.2i2c.cloud/hub/login}{JuptyerHub}
+and then \textbf{open an RStudio Notebook}.
+
+\begin{marginfigure}
+\includegraphics[width=0.8\linewidth]{img/jupyterhub} \end{marginfigure}
+
+\subsection{Step 3. Clone the repo}\label{step-3.-clone-the-repo}
+
+In RStudio, click on the \textbf{down arrow} next to New Project and
+then choose \textbf{New Project from Git Repository}.
+
+In the pop-up window, \textbf{paste the URL} you copied from GitHub,
+make sure the box for \textbf{Add packages from the base project} is
+checked (it should be, by default) and then click \textbf{OK}.
+
+\begin{flushleft}\includegraphics[width=0.8\linewidth]{img/new-project-from-git} \end{flushleft}
+
+✓ Checkpoint: You should now see your project files in the Files pane
+(bottom right). If you don't see a file called
+\texttt{Homework\ Instructions}, something went wrong - ask for help
+before continuing.
+
+\section{Hello RStudio!}\label{hello-rstudio}
+
+RStudio is comprised of four panes.
+
+\begin{figure*}
+\includegraphics[width=0.8\linewidth]{img/rstudio-anatomy} \end{figure*}
+
+\begin{itemize}
+\tightlist
+\item
+  On the bottom left is the Console, this is where you can write code
+  that will be evaluated. Try typing \texttt{2\ +\ 2} here and hit
+  enter, what do you get?
+\item
+  On the bottom right is the Files pane, as well as other panes that
+  will come handy as we start our analysis.
+\item
+  If you click on a file, it will open in the editor, on the top left
+  pane.
+\item
+  Finally, the top right pane shows your Environment. If you define a
+  variable it would show up there. Try typing
+  \texttt{x\ \textless{}-\ 2} in the Console and hit enter, what do you
+  get in the \textbf{Environment} pane? Importantly, this pane is also
+  where the \textbf{Git} interface lives. We will be using that
+  regularly throughout this assignment.
+\end{itemize}
+
+\section{Warm up}\label{warm-up}
+
+Before we introduce the data, let's warm up with some simple exercises.
+
+\begin{marginfigure}
+The top portion of your R Markdown file (between the three dashed lines)
+is called \textbf{YAML}. It stands for ``YAML Ain't Markup Language''.
+It is a human friendly data serialization standard for all programming
+languages. All you need to know is that this area is called the YAML (we
+will refer to it as such) and that it contains meta information about
+your document.
+\end{marginfigure}
+
+\subsection{Step 1. Update the YAML}\label{step-1.-update-the-yaml}
+
+Open the R Markdown (Rmd) file in your project, change the author name
+to your name, and knit the document.
+
+\begin{center}\includegraphics[width=0.8\linewidth]{img/yaml-raw-to-rendered} \end{center}
+
+\subsection{Step 2: Commit}\label{step-2-commit}
+
+Then Go to the \textbf{Git pane} in your RStudio.
+
+You should see that your Rmd (R Markdown) file and its output, your md
+file (Markdown), are listed there as recently changed files.
+
+Next, click on \textbf{Diff}. This will pop open a new window that shows
+you the \textbf{diff}erence between the last committed state of the
+document and its current state that includes your changes. If you're
+happy with these changes, click on the checkboxes of all files in the
+list, and type \emph{``Update author name''} in the \textbf{Commit
+message} box and hit \textbf{Commit}.
+
+\begin{flushleft}\includegraphics[width=0.8\linewidth]{img/update-author-name-commit} \end{flushleft}
+
+You don't have to commit after every change, this would get quite
+cumbersome. You should consider committing states that are
+\emph{meaningful to you} for inspection, comparison, or restoration. In
+the first few assignments we will tell you exactly when to commit and in
+some cases, what commit message to use. As the semester progresses we
+will let you make these decisions.
+
+\subsection{Step 3. Push}\label{step-3.-push}
+
+Now that you have made an update and committed this change, it's time to
+push these changes to the web! Or more specifically, to your repo on
+GitHub. Why? So that others can see your changes. And by others, we mean
+the course teaching team (your repos in this course are private to you
+and us, only). In order to push your changes to GitHub, click on
+\textbf{Push}.
+
+\begin{marginfigure}
+\includegraphics[width=0.8\linewidth]{img/ready-to-push} \end{marginfigure}
+
+This will prompt a dialogue box where you may need to authenticate with
+GitHub. Follow the prompts to complete the authentication process.
+
+\textbf{Note:} The first time you push, you may need to set up
+authentication. If you encounter issues, refer to the authentication
+guide posted on Canvas or ask for help during office hours.
+
+\textbf{Thought exercise:} Which of the above steps (updating the YAML,
+committing, and pushing) needs to talk to GitHub?\footnote{Only pushing
+  requires talking to GitHub, this is why you're asked for your password
+  at that point.} Pushing needs to talk to Github.
+
+\textbf{✓ Checkpoint:} After pushing, go to your GitHub repo in your web
+browser and refresh the page. You should see your updated file with your
+name in it. If you don't see the changes, try pushing again or ask for
+help.
+
+\section{Packages}\label{packages}
+
+R is an open-source language, and developers contribute functionality to
+R via packages. In this assignment we will use the following packages:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{tidyverse}: a collection of packages for doing data analysis
+  in a ``tidy'' way
+\item
+  \textbf{openintro}: a package that contains the datasets from
+  OpenIntro resources
+\end{itemize}
+
+We use the \texttt{library()} function to load packages. In your R
+Markdown document you should see an R chunk labelled
+\texttt{load-packages} which has the necessary code for loading both
+packages. You should also load these packages in your Console, which you
+can do by sending the code to your Console by clicking on the
+\textbf{Run Current Chunk} icon (green arrow pointing right icon).
+
+\begin{flushleft}\includegraphics[width=0.8\linewidth]{img/load-packages-chunk} \end{flushleft}
+
+Note that these packages also get loaded in your R Markdown environment
+when you \textbf{Knit} your R Markdown document.
+
+\textbf{✓ Checkpoint:} If the packages loaded successfully, you should
+see no error messages in red. If you see an error like ``there is no
+package called\ldots{}'', let your instructor know.
+
+\section{Data}\label{data}
+
+The city of \href{https://en.wikipedia.org/wiki/Seattle}{Seattle, WA}
+has an open data portal that includes pets registered in the city. For
+each registered pet, we have information on the pet's name and species.
+The data used in this exercise can be found in the \textbf{openintro}
+package, and it's called \texttt{seattlepets}. Since the dataset is
+distributed with the package, we don't need to load it separately; it
+becomes available to us when we load the package.
+
+You can view the dataset as a spreadsheet using the \texttt{View()}
+function. Note that you should not put this function in your R Markdown
+document, but instead type it directly in the Console, as it pops open a
+new window (and the concept of popping open a window in a static
+document doesn't really make sense\ldots). When you run this in the
+console, you'll see the following \textbf{data viewer} window pop up.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{View}\NormalTok{(seattlepets)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{flushleft}\includegraphics[width=0.8\linewidth]{img/view-data} \end{flushleft}
+
+You can find out more about the dataset by inspecting its documentation
+(which contains a \textbf{data dictionary}, name of each variable and
+its description), which you can access by running \texttt{?seattlepets}
+in the Console or using the Help menu in RStudio to search for
+\texttt{seattlepets}.
+
+\subsection{Common Issues and
+Solutions}\label{common-issues-and-solutions}
+
+As you work through this assignment, you might encounter some issues.
+Here are the most common ones:
+
+\textbf{Knitting errors:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Error: ``there is no package called\ldots{}''} → Run
+  \texttt{library(tidyverse)} and \texttt{library(openintro)} in your
+  Console first
+\item
+  \textbf{Error: ``object not found''} → Make sure you've run all code
+  chunks before the one causing the error
+\item
+  \textbf{Can't find the Knit button} → Look at the top of the editor
+  pane (where your .Rmd file is open)
+\end{itemize}
+
+\textbf{Git/GitHub issues:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Git pane is empty} → You haven't made any changes yet, or you
+  need to save your file first
+\item
+  \textbf{Can't push} → Make sure you committed first (commit before
+  push!)
+\item
+  \textbf{Authentication error} → Check with your instructor about the
+  authentication setup for JupyterHub
+\end{itemize}
+
+\textbf{R Markdown issues:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Output doesn't match what I see in Console} → Click the
+  \textbf{Run All Chunks Above} button (down arrow icon) before knitting
+\item
+  \textbf{My changes aren't showing} → Make sure you saved the file
+  (Ctrl+S or Cmd+S)
+\end{itemize}
+
+\textbf{General tips:}
+
+\begin{itemize}
+\tightlist
+\item
+  Save your work frequently (Ctrl+S or Cmd+S)
+\item
+  Knit often to catch errors early
+\item
+  Read error messages carefully - they often tell you what's wrong
+\item
+  Don't hesitate to ask for help!
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Exercises}\label{exercises}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  According to the data dictionary, how many pets are included in this
+  dataset?
+\end{enumerate}
+
+There are 52,519 pets in the dataset.
+
+\emph{After completing this exercise:}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  Write your answer in the R Markdown document under Exercise 1
+\item
+  Click \textbf{Knit} to generate the output
+\item
+  Go to the \textbf{Git pane}, click \textbf{Diff}, then check the boxes
+  next to all changed files
+\item
+  Type commit message: \texttt{"Completed\ Exercise\ 1"}
+\item
+  Click \textbf{Commit}, then click \textbf{Push}
+\item
+  Verify your Git pane is cleared (no files listed)
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Again, according to the data dictionary, how many variables do we have
+  for each pet? Write your answer in the R Markdown document under
+  Exercise 2.
+\end{enumerate}
+
+There are 7 variables for each pet.
+
+\emph{After completing this exercise:}
+
+🧶 Knit → ✅ Commit with message \texttt{"Completed\ Exercise\ 2"} → ⬆️
+Push
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  What are the three most common pet names in Seattle? To do this you
+  will need to count the frequencies of each pet name and display the
+  results in descending order of frequency so that you can easily see
+  the top three most popular names. The following code does exactly
+  that.
+\end{enumerate}
+
+\begin{marginfigure}
+The two lines of code can be read as ``Start with the seattlepets data
+frame, and then count the animal\_names, and display the results sorted
+in descending order. The `and then' in the previous sentence maps to
+\%\textgreater\%, the pipe operator, which takes what comes before it
+and plugs it in as the first argument of the function that comes after
+it.''
+\end{marginfigure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seattlepets }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(animal\_name, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\emph{Write your answer in your R Markdown document under Exercise 3. In
+this exercise you will not only provide a written answer but also
+include some code and output. You should insert the code in the code
+chunk provided for you, knit the document to see the output, and then
+write your narrative for the answer based on the output of this
+function, and knit again to see your narrative, code, and output in the
+resulting document.} The three most frequent names are Lucy, Charlie,
+and Luna. It is interesting that there are the largest amount for a N?A
+answer of 483.
+
+\emph{After completing this exercise:}
+
+🧶 Knit → ✅ Commit with message \texttt{"Completed\ Exercise\ 3"} → ⬆️
+Push
+
+Let's also look to see what the most common pet names are for various
+species. For this we need to first \texttt{group\_by()} the
+\texttt{species}, and then do the same counting we did before.
+
+\begin{marginfigure}
+Looks like many of those NAs were cats. Poor unnamed kitties\ldots{}
+\end{marginfigure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seattlepets }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(species) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(animal\_name, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 16,823 x 3
+## # Groups:   species [4]
+##    species animal_name     n
+##    <chr>   <chr>       <int>
+##  1 Cat     <NA>          406
+##  2 Dog     Lucy          337
+##  3 Dog     Charlie       306
+##  4 Dog     Bella         249
+##  5 Dog     Luna          244
+##  6 Dog     Daisy         221
+##  7 Dog     Cooper        189
+##  8 Dog     Lola          187
+##  9 Dog     Max           186
+## 10 Dog     Molly         186
+## # i 16,813 more rows
+\end{verbatim}
+
+But this output isn't exactly what we wanted. We wanted to know the most
+common cat and dog names, but there are barely any cats present in this
+output! This is because there are more dogs than cats in the dataset
+overall. We can confirm this by counting the various species in the
+data.
+
+\begin{marginfigure}
+6 pigs in the city? Ok\ldots{} But we'll continue with cats and dogs.
+\end{marginfigure}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seattlepets }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(species, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 4 x 2
+##   species     n
+##   <chr>   <int>
+## 1 Dog     35181
+## 2 Cat     17294
+## 3 Goat       38
+## 4 Pig         6
+\end{verbatim}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Let's search for the top 5 cat and dog names. To do this, we can use
+  the \texttt{slice\_max()} function. The first argument in the function
+  is the variable we want to select the highest values of, which is
+  \texttt{n}. The second argument is the number of rows to select, which
+  is \texttt{n\ =\ 5} for the top 5. It may be a bit confusing that both
+  of these are \texttt{n}, but this is because we already have a
+  variable called \texttt{n} in the data frame.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{seattlepets }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{group\_by}\NormalTok{(species) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{count}\NormalTok{(animal\_name, }\AttributeTok{sort =} \ConstantTok{TRUE}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{arrange}\NormalTok{(species,n) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{slice\_max}\NormalTok{(n, }\AttributeTok{n =} \DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 53 x 3
+## # Groups:   species [4]
+##    species animal_name     n
+##    <chr>   <chr>       <int>
+##  1 Cat     <NA>          406
+##  2 Cat     Luna          111
+##  3 Cat     Lucy          102
+##  4 Cat     Lily           86
+##  5 Cat     Max            83
+##  6 Dog     Lucy          337
+##  7 Dog     Charlie       306
+##  8 Dog     Bella         249
+##  9 Dog     Luna          244
+## 10 Dog     Daisy         221
+## # i 43 more rows
+\end{verbatim}
+
+Based on the previous output we can easily identify the most common cat
+and dog names in Seattle, but the output is sorted by \texttt{n} (the
+frequencies) as opposed to being organized by the \texttt{species}.
+Build on the pipeline to arrange the results so that they're arranged by
+\texttt{species} first, and then \texttt{n}. This means you will need to
+add one more step to the pipeline, and you have two options:
+\texttt{arrange(species,\ n)} or \texttt{arrange(n,\ species)}. You
+should try both and decide which one organizes the output by species and
+then ranks the names in order of frequency for each species.
+
+Which option groups all the cats together and all the dogs together,
+with names ranked by frequency within each species?
+
+Arrange(species,n) would do the arrangement as required. \emph{After
+completing this exercise:}
+
+🧶 Knit → ✅ Commit with message \texttt{"Completed\ Exercise\ 4} → ⬆️
+Push
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  The following visualization plots the proportion of dogs with a given
+  name versus the proportion of cats with the same name. The 20 most
+  common cat and dog names are displayed. The diagonal line on the plot
+  is the \(x = y\) line; if a name appeared on this line, the name's
+  popularity would be exactly the same for dogs and cats.
+\end{enumerate}
+
+\textbf{Tip:} You don't need to understand all the code that creates
+this visualization - that will come later in the course. For now, just
+look at the plot and answer the questions about what you observe.
+
+\begin{figure*}
+\includegraphics[width=0.8\linewidth]{hw-01-pet-names_files/figure-latex/unnamed-chunk-7-1} \end{figure*}
+
+\begin{enumerate}
+\def\labelenumi{\alph{enumi}.}
+\tightlist
+\item
+  What names are more common for cats than dogs? The ones above the line
+  or the ones below the line?
+\item
+  Is the relationship between the two variables (proportion of cats with
+  a given name and proportion of dogs with a given name) positive or
+  negative? What does this mean in context of the data?
+\end{enumerate}
+
+\emph{After completing this exercise:}
+
+Unable to complete as there is an error with a missing file -
+libMagick++ Error in dyn.load(file, DLLpath = DLLpath, \ldots) : unable
+to load shared object `/srv/rlibs/magick/libs/magick.so':
+libMagick++-6.Q16.so.8: cannot open shared object file: No such file or
+directory
+
+🧶 Knit → ✅ Commit with message \texttt{"Completed\ Exercise\ 5"} → ⬆️
+Push
+
+\textbf{To submit to Canvas:}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  In RStudio, click the \textbf{Knit} dropdown menu (next to the Knit
+  button)
+\item
+  Select \textbf{Knit to tufte\_handout} to generate a PDF
+\item
+  Download the PDF file from the Files pane
+\item
+  Upload the PDF to Canvas
+\end{enumerate}
+
+\textbf{✓ Final Checkpoint:} Visit your GitHub repo one more time to
+confirm all your work is there. We will grade what we see in your repo
+on GitHub!
+
+
+
+\end{document}
