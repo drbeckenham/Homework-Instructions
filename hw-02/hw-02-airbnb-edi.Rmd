@@ -145,8 +145,8 @@ Try binwidths of 25, 50, and 100. Which gives you the most useful view of the da
 ```{r price-hist-experiments}
 # Try binwidth = 25
 ggplot(data = edibnb, mapping = aes(x = price)) +
-  geom_histogram(binwidth = 25) +
-  facet_wrap(~neighbourhood)
+  geom_histogram(binwidth = 50) +
+  facet_wrap(~neighbourhood, nrow = 1)
 
 # Try binwidth = 50
 
@@ -154,7 +154,7 @@ ggplot(data = edibnb, mapping = aes(x = price)) +
 # Try binwidth = 100
 ```
 
-*Which binwidth did you choose and why?*
+*Which binwidth did you choose and why? I chose 100 because it was visually easier to see.*
 
 b)  Experiment with facet layout\*
 
@@ -164,7 +164,7 @@ Try these three options:
 -   `facet_wrap(~neighbourhood, ncol = 1)` - stacks vertically\
 -   `facet_wrap(~neighbourhood, nrow = 1)` - arranges horizontally
 
-*Which layout did you choose and why?*
+*Which layout did you choose and why? I liked to one with nrow as it was a better way to visualize it side by side as opposed to difference boxes.*
 
 c)  Create your final visualization
 
@@ -174,8 +174,12 @@ c)  Create your final visualization
 
 Use your chosen binwidth and layout:
 
-```{r final-price-histogram, eval = FALSE}
+```{r final-price-histogram, eval = TRUE}
 # Your final code here
+ggplot(data = edibnb, mapping = aes(x = price)) +
+  geom_histogram(binwidth = 100) +
+  facet_wrap(~neighbourhood, nrow = 1)
+
 ```
 
 *After completing Exercise 3:*
