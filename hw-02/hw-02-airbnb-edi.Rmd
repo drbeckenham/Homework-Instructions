@@ -265,15 +265,25 @@ New Town has both very high prices and high values. Looking at the visualization
 -   Faceted histograms: `geom_histogram()` + `facet_wrap()`
 -   Ridge plots: `geom_density_ridges()` (requires `library(ggridges)`)
 
-```{r review-scores-viz, eval = FALSE}
-# Your code here
+
+# Your final code here
+```{r ratings-histogram, eval = TRUE}
+# Your final code here
+ggplot(data = edibnb, mapping = aes(x =review_scores_rating)) +
+  geom_histogram(binwidth = 50) +
+  facet_wrap(~neighbourhood, nrow = 1)
+```
 ```
 
 *Interpretation (2-3 sentences):*
 
--   How do Airbnb guests rate properties in general (are ratings generally high, low, or varied)?
+-   How do Airbnb guests rate properties in general (are ratings generally high, low, or varied)? Ratings seem to be varied, but pretty centralized. There are some that do have outliers or more scores than others, but they are just that, outliers.
 -   How do the neighborhoods compare to each other?
+
+Everything is fairly even with the exclusion of Leith, which is probably outlier status.
+
 -   Are there any neighborhoods that stand out as having particularly high or low ratings?
+Leith is the highest, which is probably either a data coleciton error, or a total outlier, subject to some other external forces.
 
 *After completing Exercise 5:*
 
