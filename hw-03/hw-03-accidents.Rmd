@@ -159,16 +159,28 @@ ON Sundays, there is a dio in the data in the morning. Church? Football? It is h
 - Do certain vehicle types have more accidents in specific conditions?
 
 **Your visualization:**
-```{r custom-visualization, eval = FALSE}
-# Your code here
+```{r custom-visualization, eval = TRUE}
+ggplot(data = accidents, aes(x = highway, y = severity, fill = road_surface)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(~road_surface, ncol = 2) +
+  theme_minimal() + 
+  labs(
+    title = "Distribution of Accidents By Highway",
+    subtitle = "Comparison of Different Highways and Severity",
+    x = "Highway",
+    y = "Severity",
+    fill = "Road Surface"
+  )
 ```
+?accidents
 
 **What question does your visualization answer?**
 
 
-**What variables were used:** 
+**What variables were used:** Highway, Severity, road_surface
 
 **Interpretation (3-4 sentences):** What patterns or insights does your visualization reveal?
+Frost or Ice and Flooding show more slight accidents while dry roads show more fatalisties. That is very interesting and would make me look more at the data for correlations and causations.
 
 *After completing Exercise 4:*
 
