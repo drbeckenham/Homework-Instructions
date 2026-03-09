@@ -97,12 +97,12 @@ Your plot should include:
 
 **Hint:** Use `mutate()` with `if_else()`. The condition should check if `day_of_week` is in the vector `c("Saturday", "Sunday")`
 
-```{r create-day-type, eval = FALSE}
-accidents %
+```{r create-day-type, eval = TRUE}
+accidents %>%
   mutate(day_of_week_type = if_else(
-    ___ %in% c(___, ___), 
-    "___", 
-    "___"
+    day_of_week %in% c("Saturday", "Sunday"), 
+    "Weekend", 
+    "Weekday"
   ))
 ```
 
@@ -115,26 +115,28 @@ accidents %
 - Use `facet_wrap()` to create separate plots for weekday vs. weekend
 - Add `theme_minimal()` and appropriate labels
 
-```{r accident-density-plot, eval = FALSE}
-ggplot(data = ___, aes(x = ___, fill = ___)) +
-  geom_density(alpha = ___) +
-  facet_wrap(~___, ncol = ___) +
-  ___ +
+```{r accident-density-plot, eval = TRUE}
+ggplot(data = accidents, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.5) +
+  facet_wrap(~day_of_week, ncol = 2) +
+  theme_minimal() + 
   labs(
-    title = "___",
-    subtitle = "___",
-    x = "___",
-    y = "___",
-    fill = "___"
+    title = "Distribution of Accidents By Severity",
+    subtitle = "Comparison of Weekday and Weekend Accident",
+    x = "Time of Day",
+    y = "Density",
+    fill = "Severity"
   )
 ```
 
 **Interpretation (2-3 sentences):** Describe what patterns you observe:
 
 - When do accidents tend to occur during weekdays vs. weekends?
+Weekday accidents apear tobeslightly more than weekend. This is probably owing to the commute that many people make for swork during the week.
 - How does the severity of accidents vary by time of day?
+The accidents tend to be worse during the late afternoon and evening hours.
 - Are there any notable differences between weekdays and weekends?
-
+ON Sundays, there is a dio in the data in the morning. Church? Football? It is hard to say. There also seem to be slightly less accidents.
 
 *After completing Exercise 3:*
 
