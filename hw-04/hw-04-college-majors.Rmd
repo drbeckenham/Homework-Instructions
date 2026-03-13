@@ -298,14 +298,14 @@ college_recent_grads %>%
 
 **Hint:** Use `filter()` with two conditions, then `select()` the relevant variables, then `arrange()` appropriately.
 
-```{r stem-below-median, eval=FALSE}
+```{r stem-below-median, eval=TRUE}
 college_recent_grads %>%
   filter(
-    ___ == "___",
-    ___ <= ___
+    major_type == "stem",
+    median <= median(college_recent_grads$median)
   ) %>%
-  select(___, ___, ___, ___) %>%
-  arrange(desc(___))
+  select(major, median, p25th, p75th) %>%
+  arrange(desc(median))
 ```
 
 
@@ -314,14 +314,16 @@ college_recent_grads %>%
 
 9.  Create a scatterplot of median income vs. proportion of women in that major, coloured by whether the major is in a STEM field or not. Describe the association between these three variables.
 
-```{r women-income-stem, eval = FALSE}
-ggplot(data = college_recent_grads, aes(x = ___, y = ___, color = ___)) +
+The plot looks at women and their majors who are recent grads. The Median Income for these majors is plotted against the number of women. Then there is a notation, via color, of those that are or are not stem fields. I wonder if there would be a difference if this had an addition of what the median income for men was in these fields , and they were plotted against the women.
+
+```{r women-income-stem, eval = TRUE}
+ggplot(data = college_recent_grads, aes(x = sharewomen, y = median, color = major_type)) +
   geom_point() +
   labs(
-    x = "___",
-    y = "___",
-    color = "___",
-    title = "___"
+    x = "Proportion of Women in majors",
+    y = "Median Income",
+    color = "STEM major",
+    title = "Median Income vs Proportion of Women in Major"
   )
 ```
 
@@ -336,14 +338,27 @@ ggplot(data = college_recent_grads, aes(x = ___, y = ___, color = ___)) +
 - Do majors with higher proportions of full-time workers have higher median incomes?
 
 **Your research question:** 
-
+I would love to see the median income of women across STEM fields as opposed to men across non-stem fields.
 
 **Your analysis (code and visualization/summary statistics):**
-```{r custom-analysis}
-# Your code here
+```{r custom-analysis, eval = TRUE}
+college_recent_grads %>%
+  mutate(group = case_when(
+    major_type == "stem" & sharewomen > 0.5 ~ "Women in STEM",
+    major_type != "stem" & sharewomen <= 0.5 ~ "Men in Non-STEM"
+  )) %>%
+  filter(!is.na(group)) %>%
+  group_by(group) %>%
+  summarise(
+    median_income = median(median),
+    avg_income = mean(median),
+    n = n()
+  )
 ```
 
 **Your findings (3-4 sentences):**
+
+First, I will admit I sought some help with this code. I wasn't sure how to get one against the other, so I got help from ChatGPT. In analysis, I found that, for me, I prefer the hard cold numbers, as opposed to any visualization. What I found here was shocking. Men in non-STEM majors were paid higher than women in STEM majors. STEM majors and jobs tend to be more specialized and require more training and study. This should equate to more money, but apprently it doesn't when it comes to women. This is very disconcerting. 
 
 🧶 Knit → ✅ Commit with message `"Completed Exercise 8-10"` → ⬆️ Push
 
