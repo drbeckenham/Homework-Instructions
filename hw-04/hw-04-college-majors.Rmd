@@ -146,11 +146,11 @@ college_recent_grads %>%
 
 **Hint:** The variable for proportion of women is `sharewomen`, and total number of people is `total`.
 
-```{r top-women-majors, eval = FALSE}
+```{r top-women-majors, eval = TRUE}
 college_recent_grads %>%
-  arrange(desc(___)) %>%
-  select(___, ___, ___) %>%
-  top_n(___)
+  arrange(desc(sharewomen)) %>%
+  select(major, total, sharewomen) %>%
+  top_n(3)
 ```
 
 ## How do the distributions of median income compare across major categories?
@@ -184,10 +184,14 @@ This is telling us that we might want to reconsider the binwidth we chose for ou
 
 3.  Try binwidths of \$1000 and \$5000 and choose one. Explain your reasoning for your choice. Note that the binwidth is an argument for the `geom_histogram` function. So to specify a binwidth of \$1000, you would use `geom_histogram(binwidth = 1000)`.
 
-```{r binwidth-1000, eval = FALSE}
+```{r binwidth-1000, eval = TRUE}
+ggplot(data = college_recent_grads, mapping = aes(x = median)) +
+  geom_histogram(binwidth = 1000)
 # Try binwidth = 1000
 ```
 ```{r binwidth-5000}
+ggplot(data = college_recent_grads, mapping = aes(x = median)) +
+  geom_histogram(binwidth = 5000)
 # Try binwidth = 5000
 ```
 
@@ -204,14 +208,16 @@ college_recent_grads %>%
 
 4.  Based on the shape of the histogram you created in the previous exercise, determine which of these summary statistics is useful for describing the distribution. Write up your description (remember shape, center, spread, any unusual observations) and include the summary statistic output as well.
 
+The shape of the plot is a skewed bell, leaning to the left. There is one significant outlier to the right. The minimum amount is 22000 and the maximum is 110000. The standard deviatio is 11479.18, and the mean is 40151.45. The median is 36000. Quartile 1 iss 33000, which is the 25% range, while Quartile 3, which gives us the 75% range, is 45000. 
+
 5.  Plot the distribution of `median` income using a histogram, faceted by `major_category`. Use the `binwidth` you chose in the earlier exercise.
 
 **Hint:** Add `facet_wrap(~major_category)` to your ggplot code.
 
-```{r income-by-category, eval = FALSE}
-ggplot(data = ___, mapping = aes(x = ___)) +
-  geom_histogram(binwidth = ___) +
-  facet_wrap(~___)
+```{r income-by-category, eval = TRUE}
+ggplot(data = college_recent_grads, mapping = aes(x = median)) +
+  geom_histogram(binwidth = 5000) +
+  facet_wrap(~major_category)
 ```
 
 Now that we've seen the shapes of the distributions of median incomes for each major category, we should have a better idea for which summary statistic to use to quantify the typical median income.
@@ -223,18 +229,20 @@ Fill-in the blanks in the code below and change eval = TRUE to test your output.
 ```
 
 
-```{r eval=FALSE}
+```{r eval=TRUE}
 college_recent_grads %>%
   group_by(major_category) %>%
-  summarise(___ = ___(median)) %>%
-  arrange(___)
+  summarise(median_income = median(median)) %>%
+  arrange(desc(median_income))
 ```
+Engineering has the highest median income, so that would be my choice.
 
 7.  Which major category is the least popular in this sample? To answer this question we use a new function called `count`, which first groups the data and then counts the number of observations in each category (see below). Add to the pipeline appropriately to arrange the results so that the major with the lowest observations is on top.
 
 ```{r}
 college_recent_grads %>%
-  count(major_category)
+  count(major_category) %>%
+  arrange(n)
 ```
 
 🧶 Knit → ✅ Commit with message `"Completed Exercise 1-7"` → ⬆️ Push
