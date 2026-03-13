@@ -1,6 +1,6 @@
 ---
 title: "HW 04 - What should I major in?"
-author: "[Your Name]"
+author: "Susan Beckenham"
 output: 
   tufte::tufte_html:
     css: ../lab.css
@@ -16,7 +16,7 @@ link-citations: true
 
 ```{r include = FALSE}
 knitr::opts_chunk$set(
-  eval = FALSE,
+  eval = TRUE,
   out.width = "80%",
   fig.asp = 0.618,
   fig.width = 10,
